@@ -19,4 +19,4 @@ jobs:
           accountId: 2226f40c3e3cec805a47b5a2e01c5b5f
           projectName: MLM3000# e.g. 'my-project'
           directory:  antflix/MaterialListGenerator # e.g. 'dist'
-          gitHubToken: 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
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
