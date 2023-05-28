@@ -230,6 +230,7 @@ def todo() -> str:   # show the form, it wasn't submitted
 
 
 
+
 @app.route('/manifest.json')  # type: ignore
 def manifest() -> Response:
     return app.send_static_file('manifest.json')
