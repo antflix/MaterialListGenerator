@@ -5,6 +5,7 @@ from typing import Any
 from flask import (Flask, Response, app, send_file, redirect, render_template,
                    request, url_for)
 from openpyxl import load_workbook
+import openpyxl
 # from flask_debugtoolbar import DebugToolbarExtension
 
 
@@ -227,8 +228,51 @@ def todo() -> str:   # show the form, it wasn't submitted
 #     return render_template('table.html', filtered_rows=filtered_rows)
 
 
+@app.route('/result')
+def result():
+    # Load the Excel file and read the calculated values. Use openpyxl for working with xlsx files.
+    wb = openpyxl.load_workbook("templates/workstemp.xlsx", data_only=True)
 
+    new = openpyxl.load_workbook("templates/materiallist.xlsx")
+    nsheet = new.active
+    sheet = wb.active
+    row_index = 11
+    cell_values = []
+    title_values = []
+    material = []
+    
+    # Fix the indentation for the if statement
+    for row in range(381, 456):
+        cell_value = sheet.cell(row=row, column=9).value # type: ignore
+        title = sheet.cell(row=row, column=8).value # type: ignore
+        if cell_value != 0:
+            # Append the non-zero cell value to the list
+            cell_values.append(cell_value)
+            title_values.append(title)
+            material.append((title, cell_value)) # type: ignore
+            
+            # Access the cell using row_index instead of the row number
+            nsheet.cell(row=row_index, column=3, value=title)  # type: ignore # Write title to column 3 of the current row
+            nsheet.cell(row=row_index, column=2, value=cell_value)  # type: ignore # Write cell_value to column 2 of the current row
+            row_index += 1  # Move down to the next row
+            
+    rows = []
+    starting_row = 11 #Row index to start appending values
+    
+    # Use openpyxl iter_rows to iterate through the rows
+    for row in nsheet.iter_rows(min_row=starting_row, values_only=True): # type: ignore
+        rows.append(row)
+        print(row)
+        
+    # Fix the file name used to save the file
+    new.save("templates/materiallist.xlsx")
+    new.close()
+    
+    wb.save("templates/workstemp.xlsx")
+    wb.close()
 
+    # Pass the cell values to the template
+    return render_template('result.html', rows=rows)
 
 
 @app.route('/manifest.json')  # type: ignore
