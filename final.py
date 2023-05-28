@@ -227,44 +227,6 @@ def todo() -> str:   # show the form, it wasn't submitted
 #     return render_template('table.html', filtered_rows=filtered_rows)
 
 
-@app.route('/result')
-def result():
-    # # Open the Excel file to trigger the calculation of formulas
-    # excel_app = win32.Dispatch("Excel.Application", pythoncom.CoInitialize())
-    # wb = excel_app.Workbooks.Open(r'D:/Production/templates/workstemp.xlsx')
-    # wb.Save()
-    # wb.Close()
-    # excel_app.Quit()
-
-    # Load the Excel file and read the calculated values
-    wb = load_workbook("templates/workstemp.xlsx", data_only=True)
-    new = load_workbook("templates/materiallist.xlsx")
-    nsheet = new.active
-    sheet = wb.active
-    row_index = 11
-    cell_values = []
-    title_values = []
-    material = []
-    for row in range(381, 456):
-        cell_value = sheet.cell(row=row, column=9).value # type: ignore
-        title = sheet.cell(row=row, column=8).value # type: ignore
-        if cell_value != 0:
-        # Append the non-zero cell value to the list
-            cell_values.append(cell_value)
-            title_values.append(title)
-            material.append((title, cell_value)) # type: ignore
-            nsheet.cell(row=row_index, column=3, value=title)  # type: ignore # Write title to column 1 of the current row
-            nsheet.cell(row=row_index, column=2, value=cell_value)  # type: ignore # Write cell_value to column 2 of the current row
-            row_index += 1  # Move down to the next row
-
-    
-    rows = []
-    starting_row = 11 #Row index to start appending values
-    for row in nsheet.iter_rows(min_row=starting_row, values_only=True): # type: ignore
-        rows.append(row)
-        print(row)
-    new.save("templates/new.xlsx")
-    new.close()
 
 
 
