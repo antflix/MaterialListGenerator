@@ -265,13 +265,7 @@ def result():
         print(row)
     new.save("templates/new.xlsx")
     new.close()
-    
-    wb.save("templates/workstemp.xlsx")
-    wb.close()
 
-    # Pass the cell values to the template
-    return render_template('result.html', rows=rows)
-    # return   send_file(filename, as_attachment=True, ) # type: ignore
 
 
 @app.route('/manifest.json')  # type: ignore
