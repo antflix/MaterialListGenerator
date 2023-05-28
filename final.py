@@ -119,7 +119,7 @@ def form() -> Any:
 
 @app.route('/download') # type: ignore
 def download() -> Response:
-    filename = 'templates/new.xlsx'
+    filename = 'templates/materiallist.xlsx'
     return send_file(filename, as_attachment=True)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     
 
@@ -265,7 +265,7 @@ def result():
         print(row)
         
     # Fix the file name used to save the file
-    new.save("templates/materiallist.xlsx")
+    new.save("templates/new.xlsx")
     new.close()
     
     wb.save("templates/workstemp.xlsx")
